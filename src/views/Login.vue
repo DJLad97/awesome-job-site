@@ -2,7 +2,10 @@
     <card>
         <template #title>Login</template>
         <template #content>
-            <p v-if="userFound === false" class="text-error">
+            <p
+                v-if="userFound === false"
+                class="text-error bg-error/30 border border-error rounded p-2"
+            >
                 Invalid email or password
             </p>
             <form @submit.prevent="submit">
@@ -123,7 +126,11 @@ async function submit() {
 
             if (foundUser) {
                 loggedInUser.value = foundUser;
-                router.push(RoutePaths.Home);
+                if (router.options.history.state.back) {
+                    router.back();
+                } else {
+                    router.push(RoutePaths.Home);
+                }
             } else {
                 userFound.value = false;
             }
