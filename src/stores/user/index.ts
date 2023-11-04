@@ -8,21 +8,25 @@ export const useUserStore = defineStore(
         const loggedInUser = ref<User | null>(null);
         const validUsers = ref<Array<User>>([
             {
+                id: 1,
                 name: 'Dan',
                 email: 'dan@test.com',
                 password: 'password1',
             },
             {
+                id: 2,
                 name: 'Dan2',
                 email: 'dan2@test.com',
                 password: 'password2',
             },
             {
+                id: 3,
                 name: 'Dan3',
                 email: 'dan3@test.com',
                 password: 'password3',
             },
             {
+                id: 4,
                 name: 'Dan4',
                 email: 'dan4@test.com',
                 password: 'password4',

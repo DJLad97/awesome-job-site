@@ -147,7 +147,7 @@ const rules = computed(() => ({
         ),
         sameAsPassword: helpers.withMessage(
             'Passwords must match',
-            sameAs('password')
+            sameAs(password.value)
         ),
     },
 }));
@@ -162,7 +162,11 @@ async function submit() {
 
         setTimeout(() => {
             loading.value = false;
+            const newUserId =
+                validUsers.value[validUsers.value.length - 1].id + 1;
+
             const user = {
+                id: newUserId,
                 name: name.value,
                 email: email.value,
                 password: password.value,
