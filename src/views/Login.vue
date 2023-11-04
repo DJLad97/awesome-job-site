@@ -70,11 +70,12 @@ import RoutePaths from '@/router/routes';
 import TextInput from '@/components/form/TextInput.vue';
 import ErrorMessage from '@/components/form/ErrorMessage.vue';
 import Card from '@/components/Card.vue';
+import { User } from '@/stores/user/types';
 
 const store = useUserStore();
 const router = useRouter();
 
-const { validUsers, isLoggedIn } = storeToRefs(store);
+const { validUsers, loggedInUser } = storeToRefs(store);
 
 const email = ref('');
 const password = ref('');
@@ -102,18 +103,29 @@ async function submit() {
             email: email.value,
             password: password.value,
         };
+
+        let foundUser: User | null = null;
         loading.value = true;
 
         setTimeout(() => {
-            userFound.value = validUsers.value.some((validUser) => {
-                console.log(JSON.stringify(validUser) === JSON.stringify(user));
-                return JSON.stringify(validUser) === JSON.stringify(user);
-            });
+            foundUser =
+                validUsers.value.find((validUser: User) => {
+                    const userWithoutName = {
+                        email: validUser.email,
+                        password: validUser.password,
+                    };
+                    return (
+                        JSON.stringify(userWithoutName) === JSON.stringify(user)
+                    );
+                }) ?? null;
+
             loading.value = false;
 
-            if (userFound.value) {
-                isLoggedIn.value = true;
+            if (foundUser) {
+                loggedInUser.value = foundUser;
                 router.push(RoutePaths.Home);
+            } else {
+                userFound.value = false;
             }
         }, 700);
     }

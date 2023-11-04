@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { User } from './types';
 
 export const useUserStore = defineStore(
     'user',
     () => {
-        const isLoggedIn = ref(false);
+        const loggedInUser = ref<User | null>(null);
         const validUsers = ref<Array<User>>([
             {
                 name: 'Dan',
@@ -29,7 +29,13 @@ export const useUserStore = defineStore(
             },
         ]);
 
-        return { isLoggedIn, validUsers };
+        const isLoggedIn = computed(() => !!loggedInUser.value);
+
+        function logout() {
+            loggedInUser.value = null;
+        }
+
+        return { loggedInUser, isLoggedIn, validUsers, logout };
     },
     {
         persist: true,

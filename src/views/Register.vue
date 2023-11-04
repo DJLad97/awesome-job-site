@@ -118,7 +118,7 @@ import Card from '@/components/Card.vue';
 const store = useUserStore();
 const router = useRouter();
 
-const { validUsers, isLoggedIn } = storeToRefs(store);
+const { validUsers, loggedInUser } = storeToRefs(store);
 
 const name = ref('');
 const email = ref('');
@@ -162,13 +162,15 @@ async function submit() {
 
         setTimeout(() => {
             loading.value = false;
-            validUsers.value.push({
+            const user = {
                 name: name.value,
                 email: email.value,
                 password: password.value,
-            });
+            };
 
-            isLoggedIn.value = true;
+            validUsers.value.push(user);
+
+            loggedInUser.value = user;
 
             router.push(RoutePaths.Home);
         }, 700);
