@@ -106,15 +106,16 @@ async function submit() {
 
         setTimeout(() => {
             userFound.value = validUsers.value.some((validUser) => {
+                console.log(JSON.stringify(validUser) === JSON.stringify(user));
                 return JSON.stringify(validUser) === JSON.stringify(user);
             });
             loading.value = false;
-        }, 700);
 
-        if (userFound) {
-            isLoggedIn.value = true;
-            router.push(RoutePaths.Home);
-        }
+            if (userFound.value) {
+                isLoggedIn.value = true;
+                router.push(RoutePaths.Home);
+            }
+        }, 700);
     }
 }
 
