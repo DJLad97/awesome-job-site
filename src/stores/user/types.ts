@@ -1,10 +1,5 @@
 export type User = {
-    email: string;
-    password: string;
-    jobs: {};
-};
-
-export type UserLogin = {
+    name: string;
     email: string;
     password: string;
 };
