@@ -11,9 +11,9 @@
                 Awesome Job Site
             </router-link>
         </div>
-        <ul class="sm:menu sm:menu-horizontal px-1 hidden">
+        <menu role="menu" class="sm:menu sm:menu-horizontal px-1 hidden">
             <nav-list />
-        </ul>
+        </menu>
         <label
             for="sidebar"
             aria-label="open sidebar"
@@ -21,14 +21,14 @@
         >
             <burger-menu />
         </label>
-        <div class="drawer-side">
+        <div class="drawer-side sm:hidden">
             <label
                 for="sidebar"
                 aria-label="close sidebar"
                 class="drawer-overlay"
             ></label>
 
-            <ul class="menu p-4 w-80 min-h-full bg-base-200">
+            <menu role="menu" class="menu p-4 w-80 min-h-full bg-base-200">
                 <li>
                     <label
                         for="sidebar"
@@ -39,7 +39,7 @@
                     </label>
                 </li>
                 <nav-list />
-            </ul>
+            </menu>
         </div>
     </nav>
 </template>
