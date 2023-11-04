@@ -11,5 +11,11 @@ export default defineConfig({
             '@components': path.resolve(__dirname, './src/components'),
         },
     },
-    plugins: [vue()],
+    plugins: [
+        vue({
+            script: {
+                defineModel: true,
+            },
+        }),
+    ],
 });
