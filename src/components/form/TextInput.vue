@@ -2,7 +2,7 @@
     <input
         v-model="input"
         :type="type"
-        class="input input-bordered w-full max-w-xs"
+        class="input input-bordered w-full"
         :name="name"
         :id="id"
         :aria-invalid="ariaInvalid"
