@@ -1,11 +1,9 @@
 <template>
     <card>
-        <template #title>Login</template>
+        <template #title>Reset Password</template>
         <template #content>
-            <error-box
-                class="text-error bg-error/30 border border-error rounded p-2"
-            >
-                Invalid email or password
+            <error-box v-if="userFound === false">
+                Something went wrong. Please try again
             </error-box>
             <form @submit.prevent="submit">
                 <div class="form-control w-full">
@@ -30,20 +28,20 @@
                 </div>
                 <div class="form-control w-full">
                     <label for="password" class="label">
-                        <span class="label-text">Password</span>
+                        <span class="label-text">New Password</span>
                     </label>
                     <text-input
-                        v-model:input="password"
-                        type="password"
-                        name="password"
-                        id="password"
-                        :class="[isInvalid('password') ? 'input-error' : '']"
-                        :ariaInvalid="isInvalid('password')"
-                        ariaErrormessage="password-error"
+                        v-model:input="newPassword"
+                        type="newPassword"
+                        name="newPassword"
+                        id="newPassword"
+                        :class="[isInvalid('newPassword') ? 'input-error' : '']"
+                        :ariaInvalid="isInvalid('newPassword')"
+                        ariaErrormessage="newPassword-error"
                     />
                     <error-message
-                        v-if="isInvalid('password')"
-                        id="password-error"
+                        v-if="isInvalid('newPassword')"
+                        id="newPassword-error"
                     >
                         {{ v$.password.$errors[0].$message }}
                     </error-message>
@@ -54,14 +52,8 @@
                         v-if="loading"
                         class="text-white loading loading-bars loading-xs"
                     ></span>
-                    <span v-else>Login</span>
+                    <span v-else>Reset</span>
                 </button>
-                <router-link
-                    :to="RoutePaths.ForgotPassword"
-                    class="btn btn-neutral-content w-full mt-4"
-                >
-                    Forgot password?
-                </router-link>
             </form>
         </template>
     </card>
@@ -84,10 +76,10 @@ import ErrorBox from '@/components/form/ErrorBox.vue';
 const store = useUserStore();
 const router = useRouter();
 
-const { registeredUsers, loggedInUser } = storeToRefs(store);
+const { getUserByEmail } = storeToRefs(store);
 
 const email = ref('');
-const password = ref('');
+const newPassword = ref('');
 const loading = ref(false);
 const userFound = ref<boolean | null>(null);
 
@@ -96,47 +88,29 @@ const rules = computed(() => ({
         required: helpers.withMessage('Email is required', required),
         emailRule: helpers.withMessage('Please enter a valid email', emailRule),
     },
-    password: {
-        required: helpers.withMessage('Password is required', required),
+    newPassword: {
+        required: helpers.withMessage('New Password is required', required),
     },
 }));
 
-const v$ = useVuelidate(rules, { email, password });
+const v$ = useVuelidate(rules, { email, newPassword });
 
 async function submit() {
     const isFormValid = await v$.value.$validate();
     userFound.value = null;
 
     if (isFormValid) {
-        const user = {
-            email: email.value,
-            password: password.value,
-        };
-
         let foundUser: User | null = null;
         loading.value = true;
 
         setTimeout(() => {
-            foundUser =
-                registeredUsers.value.find((registeredUser: User) => {
-                    const userWithoutName = {
-                        email: registeredUser.email,
-                        password: registeredUser.password,
-                    };
-                    return (
-                        JSON.stringify(userWithoutName) === JSON.stringify(user)
-                    );
-                }) ?? null;
+            foundUser = getUserByEmail.value(email.value);
 
             loading.value = false;
 
             if (foundUser) {
-                loggedInUser.value = foundUser;
-                if (router.options.history.state.back) {
-                    router.back();
-                } else {
-                    router.push(RoutePaths.Home);
-                }
+                foundUser.password = newPassword.value;
+                router.push(RoutePaths.Login);
             } else {
                 userFound.value = false;
             }
@@ -144,7 +118,7 @@ async function submit() {
     }
 }
 
-function isInvalid(value: 'email' | 'password') {
+function isInvalid(value: 'email' | 'newPassword') {
     const errors = v$.value[value].$errors;
 
     return errors.length > 0;
