@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Job from '@/views/Job.vue';
+import UserJobs from '@/views/UserJobs.vue';
 import RoutePaths from './routes';
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         path: `${RoutePaths.Job}/:id`,
         name: 'Job',
         component: Job,
+    },
+    {
+        path: RoutePaths.UserJobs,
+        name: 'UserJobs',
+        component: UserJobs,
     },
 ];
 

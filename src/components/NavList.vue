@@ -46,7 +46,7 @@ const loggedInLinks: Array<Links> = [
     },
     {
         text: 'Your Jobs',
-        route: RoutesPaths.Home,
+        route: RoutesPaths.UserJobs,
     },
     {
         text: 'Logout',

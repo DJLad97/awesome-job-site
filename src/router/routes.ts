@@ -1,8 +1,8 @@
 const RoutesPaths = {
-    Home: '/home',
+    Home: '/',
     Login: '/login',
     Register: '/register',
-    YourJobs: '/your-jobs',
+    UserJobs: '/your-jobs',
     Job: '/job',
 } as const;
 
