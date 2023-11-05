@@ -54,11 +54,14 @@
                 class="mt-4 block btn btn-primary btn-sm"
                 @click="goToJob(job.id)"
             >
-                <span v-if="!getUserJobsbyId(job.id)">Apply</span>
+                <span v-if="!getUserJobbyId(job.id)">Apply</span>
                 <span v-else>View Job</span>
             </button>
-            <p v-if="getUserJobsbyId(job.id)" class="font-bold mt-4">Applied</p>
+            <p v-if="getUserJobbyId(job.id)" class="font-bold mt-4">Applied</p>
         </div>
+    </div>
+    <div v-if="filteredJobs.length === 0" class="text-center pt-4">
+        <h2>No jobs found</h2>
     </div>
 </template>
 
@@ -77,7 +80,7 @@ const props = defineProps<{
     jobs: Array<Job>;
 }>();
 
-const { getUserJobsbyId } = storeToRefs(userStore);
+const { getUserJobbyId } = storeToRefs(userStore);
 
 const searchValue = ref('');
 const filteredJobs = computed(() => {
@@ -87,9 +90,15 @@ const filteredJobs = computed(() => {
             .includes(searchValue.value.toLowerCase());
     });
 
-    console.log(filteredJobs);
+    if (!searchValue.value) {
+        return props.jobs;
+    }
 
-    return filteredJobs.length > 0 ? filteredJobs : props.jobs;
+    if (filteredJobs.length === 0) {
+        return [];
+    } else {
+        return filteredJobs;
+    }
 });
 
 function goToJob(id: number) {

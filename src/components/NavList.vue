@@ -14,9 +14,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 import RoutesPaths from '@/router/routes';
 import { useUserStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
 
 type Links = {
     text: string;
@@ -25,6 +26,7 @@ type Links = {
 };
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const { isLoggedIn, loggedInUser } = storeToRefs(userStore);
 
@@ -52,9 +54,14 @@ const loggedInLinks: Array<Links> = [
         text: 'Logout',
         action: () => {
             userStore.logout();
+            redirectAfterLogout();
         },
     },
 ];
+
+function redirectAfterLogout() {
+    router.push(RoutesPaths.Home);
+}
 
 const activeLinks = computed(() => {
     if (isLoggedIn.value) {

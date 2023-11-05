@@ -37,12 +37,20 @@ export const useUserStore = defineStore(
 
         const isLoggedIn = computed(() => !!loggedInUser.value);
 
-        const getUserJobsbyId = computed(() => (jobId: number) => {
+        const getUserJobbyId = computed(() => (jobId: number) => {
             return (
                 userJobs.value.find(
                     (userJob) =>
                         userJob.jobId === jobId &&
                         userJob.userId === loggedInUser.value?.id
+                ) ?? null
+            );
+        });
+
+        const getJobsForCurrentUser = computed(() => {
+            return (
+                userJobs.value.filter(
+                    (userJob) => userJob.userId === loggedInUser.value?.id
                 ) ?? null
             );
         });
@@ -66,8 +74,9 @@ export const useUserStore = defineStore(
 
             // Getters
             isLoggedIn,
-            getUserJobsbyId,
+            getUserJobbyId,
             getUserByEmail,
+            getJobsForCurrentUser,
 
             // Actions
             logout,

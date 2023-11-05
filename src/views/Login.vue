@@ -3,6 +3,7 @@
         <template #title>Login</template>
         <template #content>
             <error-box
+                v-if="userFound === false"
                 class="text-error bg-error/30 border border-error rounded p-2"
             >
                 Invalid email or password
@@ -61,6 +62,21 @@
                     class="btn btn-neutral-content w-full mt-4"
                 >
                     Forgot password?
+                </router-link>
+                <div class="relative flex mt-4 items-center">
+                    <div
+                        class="flex-grow border-t border-neutral-content"
+                    ></div>
+                    <span class="flex-shrink mx-4">Or</span>
+                    <div
+                        class="flex-grow border-t border-neutral-content"
+                    ></div>
+                </div>
+                <router-link
+                    :to="RoutePaths.Register"
+                    class="btn btn-accent w-full mt-4"
+                >
+                    Register
                 </router-link>
             </form>
         </template>

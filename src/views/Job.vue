@@ -12,9 +12,11 @@
             <h2 class="pt-4">{{ job.company }}</h2>
             <p class="pt-4 text-sm">{{ job.description }}</p>
             <div class="py-6"></div>
-            <h2 class="text-4xl pb-4">Apply</h2>
-
-            <div class="divide-primary" />
+            <h2 class="text-4xl pb-2">Apply</h2>
+            <span v-if="!isLoggedIn" class="self-end text-sm text-info"
+                >Please log in to apply</span
+            >
+            <div class="py-2"></div>
             <form v-if="!applied" @submit.prevent="submit">
                 <div class="form-control w-full">
                     <label for="name" class="label">
@@ -172,7 +174,7 @@ const route = useRoute();
 const router = useRouter();
 
 const { getJobById } = storeToRefs(jobStore);
-const { loggedInUser, isLoggedIn, userJobs, getUserJobsbyId } =
+const { loggedInUser, isLoggedIn, userJobs, getUserJobbyId } =
     storeToRefs(userStore);
 
 const job: Job | null = getJobById.value(Number(route.params.id));
@@ -187,7 +189,7 @@ const applied = ref(false);
 
 onMounted(() => {
     if (job) {
-        applied.value = !!getUserJobsbyId.value(job.id);
+        applied.value = !!getUserJobbyId.value(job.id);
     }
 });
 

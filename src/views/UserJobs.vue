@@ -1,7 +1,8 @@
 <template>
     <div class="container flex flex-col sm:w-1/2 w-3/4">
         <h1 class="text-center py-4">Your Jobs</h1>
-        <jobs-list :jobs="appliedJobs" />
+        <jobs-list v-if="hasAppliedJobs()" :jobs="appliedJobs" />
+        <h2 v-else>You haven't applied for any jobs</h2>
     </div>
 </template>
 
@@ -16,12 +17,12 @@ const jobStore = useJobsStore();
 const userStore = useUserStore();
 
 const { getJobById } = storeToRefs(jobStore);
-const { userJobs } = storeToRefs(userStore);
+const { getJobsForCurrentUser } = storeToRefs(userStore);
 const appliedJobs = ref<Array<Job>>([]);
 
 onMounted(() => {
     if (hasAppliedJobs()) {
-        userJobs.value.forEach((userJob) => {
+        getJobsForCurrentUser.value.forEach((userJob) => {
             const job = getJobById.value(userJob.jobId);
 
             if (job) {
@@ -32,6 +33,6 @@ onMounted(() => {
 });
 
 function hasAppliedJobs() {
-    return userJobs.value.length > 0;
+    return getJobsForCurrentUser.value.length > 0;
 }
 </script>
