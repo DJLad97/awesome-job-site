@@ -22,7 +22,7 @@ const appliedJobs = ref<Array<Job>>([]);
 onMounted(() => {
     if (hasAppliedJobs()) {
         userJobs.value.forEach((userJob) => {
-            const job = getJobById.value(userJob.job_id);
+            const job = getJobById.value(userJob.jobId);
 
             if (job) {
                 appliedJobs.value.push(job);
