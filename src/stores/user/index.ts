@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { User } from './types';
+import { User, UserJobs } from './types';
 
 export const useUserStore = defineStore(
     'user',
     () => {
         const loggedInUser = ref<User | null>(null);
-        const validUsers = ref<Array<User>>([
+        const registeredUsers = ref<Array<User>>([
             {
                 id: 1,
                 name: 'Dan',
@@ -33,13 +33,34 @@ export const useUserStore = defineStore(
             },
         ]);
 
+        const userJobs = ref<Array<UserJobs>>([]);
+
         const isLoggedIn = computed(() => !!loggedInUser.value);
+
+        const getUserJobsbyId = computed(() => (jobId: number) => {
+            return (
+                userJobs.value.find((userJob) => userJob.job_id === jobId) ??
+                null
+            );
+        });
 
         function logout() {
             loggedInUser.value = null;
         }
 
-        return { loggedInUser, isLoggedIn, validUsers, logout };
+        return {
+            // State
+            loggedInUser,
+            registeredUsers,
+            userJobs,
+
+            // Getters
+            isLoggedIn,
+            getUserJobsbyId,
+
+            // Actions
+            logout,
+        };
     },
     {
         persist: true,
