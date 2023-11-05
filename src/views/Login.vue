@@ -78,7 +78,7 @@ import { User } from '@/stores/user/types';
 const store = useUserStore();
 const router = useRouter();
 
-const { validUsers, loggedInUser } = storeToRefs(store);
+const { registeredUsers, loggedInUser } = storeToRefs(store);
 
 const email = ref('');
 const password = ref('');
@@ -112,10 +112,10 @@ async function submit() {
 
         setTimeout(() => {
             foundUser =
-                validUsers.value.find((validUser: User) => {
+                registeredUsers.value.find((registeredUser: User) => {
                     const userWithoutName = {
-                        email: validUser.email,
-                        password: validUser.password,
+                        email: registeredUser.email,
+                        password: registeredUser.password,
                     };
                     return (
                         JSON.stringify(userWithoutName) === JSON.stringify(user)

@@ -118,7 +118,7 @@ import Card from '@/components/Card.vue';
 const store = useUserStore();
 const router = useRouter();
 
-const { validUsers, loggedInUser } = storeToRefs(store);
+const { registeredUsers, loggedInUser } = storeToRefs(store);
 
 const name = ref('');
 const email = ref('');
@@ -163,7 +163,7 @@ async function submit() {
         setTimeout(() => {
             loading.value = false;
             const newUserId =
-                validUsers.value[validUsers.value.length - 1].id + 1;
+                registeredUsers.value[registeredUsers.value.length - 1].id + 1;
 
             const user = {
                 id: newUserId,
@@ -172,7 +172,7 @@ async function submit() {
                 password: password.value,
             };
 
-            validUsers.value.push(user);
+            registeredUsers.value.push(user);
 
             loggedInUser.value = user;
 
@@ -188,6 +188,6 @@ function isInvalid(value: 'name' | 'email' | 'password' | 'confirmPassword') {
 }
 
 function isUniqueEmail(value: string) {
-    return !!!validUsers.value.find((user) => user.email === value);
+    return !!!registeredUsers.value.find((user) => user.email === value);
 }
 </script>
