@@ -6,7 +6,8 @@ export type User = {
 };
 
 export type UserJobs = Pick<User, 'email' | 'name'> & {
-    job_id: number;
+    userId: number;
+    jobId: number;
     phoneNumber: string;
     coverLetter: string | null;
     cv: string;

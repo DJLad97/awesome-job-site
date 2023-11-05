@@ -226,15 +226,18 @@ async function submit() {
         loading.value = true;
         setTimeout(() => {
             loading.value = false;
-            userJobs.value.push({
-                job_id: job.id,
-                name: name.value,
-                email: email.value,
-                phoneNumber: phoneNumber.value,
-                coverLetter: coverLetter.value ?? null,
-                cv: cv.value,
-            });
-            applied.value = true;
+            if (loggedInUser.value) {
+                userJobs.value.push({
+                    userId: loggedInUser.value?.id,
+                    jobId: job.id,
+                    name: name.value,
+                    email: email.value,
+                    phoneNumber: phoneNumber.value,
+                    coverLetter: coverLetter.value ?? null,
+                    cv: cv.value,
+                });
+                applied.value = true;
+            }
         }, 700);
     }
 }

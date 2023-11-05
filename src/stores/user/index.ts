@@ -39,7 +39,17 @@ export const useUserStore = defineStore(
 
         const getUserJobsbyId = computed(() => (jobId: number) => {
             return (
-                userJobs.value.find((userJob) => userJob.job_id === jobId) ??
+                userJobs.value.find(
+                    (userJob) =>
+                        userJob.jobId === jobId &&
+                        userJob.userId === loggedInUser.value?.id
+                ) ?? null
+            );
+        });
+
+        const getUserByEmail = computed(() => (email: string) => {
+            return (
+                registeredUsers.value.find((user) => user.email === email) ??
                 null
             );
         });
@@ -57,6 +67,7 @@ export const useUserStore = defineStore(
             // Getters
             isLoggedIn,
             getUserJobsbyId,
+            getUserByEmail,
 
             // Actions
             logout,
